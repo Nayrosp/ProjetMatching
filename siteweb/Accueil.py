@@ -7,14 +7,13 @@ st.set_page_config(
     page_title="Accueil",
     page_icon="😈",
 )
+# ---- Fonction pour récupérer l'animation lottie ----
 
 def load_lottieurl(url):
     r = requests.get(url)
     if r.status_code != 200:
         return None
     return r.json
-
-# ---- Image animée lottie ----
 
 lottie_coding = "https://lottie.host/cb413a1f-c73f-47c7-ba8b-b9948defcbfc/7ST4jeTPwB.json"
 
@@ -54,6 +53,7 @@ with right_column:
 with st.container():
     st.write("---")
     st.header("Technologie Avancée")
+    st.write("##")
     texte_technologie = ("""
     Notre laboratoire est équipé des technologies les plus récentes, garantissant des analyses précises, 
     rapides et conformes aux normes internationales. Nous investissons continuellement dans la formation de notre personnel 
@@ -65,6 +65,7 @@ with st.container():
 with st.container():
     st.write("---")
     st.header("Engagement envers la Qualité")
+    st.write("##")
     texte_qualite = ("""
     La qualité est au cœur de tout ce que nous faisons. 
     Nous suivons des protocoles stricts de contrôle qualité et participons régulièrement à des programmes d'évaluation 

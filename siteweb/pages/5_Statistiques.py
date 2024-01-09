@@ -30,7 +30,6 @@ try:
     fig_analysis = px.pie(names=labels_with_percentages, values=count_analysis.values, title="Répartition des analyses")
 
     # Afficher le graphique
-    st.title("Répartition des analyses")
     st.plotly_chart(fig_analysis)
 
 finally:

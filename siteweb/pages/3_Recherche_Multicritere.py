@@ -21,9 +21,6 @@ def get_filtered_data(nom_patient, prenom_patient, nom_analyse):
     df = pd.read_sql(query, connexion)
     return df
 
-# Interface utilisateur avec Streamlit
-st.title("Filtrage des données MySQL avec Streamlit")
-
 # Récupération des noms uniques des patients et des analyses
 patients = pd.read_sql("SELECT DISTINCT Nom, Prenom FROM Patients", connexion)
 analyses = pd.read_sql("SELECT DISTINCT Nom_de_l_analyse FROM Analyses", connexion)
