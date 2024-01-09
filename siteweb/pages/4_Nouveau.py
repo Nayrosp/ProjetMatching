@@ -67,13 +67,13 @@ cursor.close()
 conn.close()
 
 # Extraire les données de la table Patients
-conn = mysql.connector.connect(
+connexion = mysql.connector.connect(
     host="localhost",
     user="root",
     password="MySqlMatching",
     database="matching2"
 )
-cursor = conn.cursor()
+cursor = connexion.cursor()
 cursor.execute("SELECT * FROM Patients")
 patients_data = cursor.fetchall()
 columns_patients = [i[0] for i in cursor.description]

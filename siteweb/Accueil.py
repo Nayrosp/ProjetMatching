@@ -14,7 +14,7 @@ def load_lottieurl(url):
         return None
     return r.json
 
-# ---- LOAD ASSETS ----
+# ---- Image animée lottie ----
 
 lottie_coding = "https://lottie.host/cb413a1f-c73f-47c7-ba8b-b9948defcbfc/7ST4jeTPwB.json"
 
@@ -26,7 +26,7 @@ Chez CESI Medical, nous sommes dévoués à fournir des services d'analyses biom
 Forts d'une équipe d'experts qualifiés et équipés des technologies les plus avancées, nous nous engageons à soutenir les professionnels de la santé, les chercheurs et les patients dans leurs besoins d'analyses diagnostiques et de recherche.
          """)
 
-# ---- BUT du projet -----
+# ---- Nos Services -----
 
 with st.container():
     st.write("---")
@@ -50,6 +50,7 @@ Nous proposons des services de conseil et de formation pour aider les profession
 with right_column:
     st_lottie(lottie_coding, height=400, key="coding")
 
+# ---- Technologie Avancée -----
 with st.container():
     st.write("---")
     st.header("Technologie Avancée")
@@ -60,6 +61,7 @@ with st.container():
     """)
     st.markdown(f"<div style='text-align: justify;'>{texte_technologie}</div>", unsafe_allow_html=True)
 
+# ---- Engagement envers la Qualité -----
 with st.container():
     st.write("---")
     st.header("Engagement envers la Qualité")

@@ -14,7 +14,7 @@ def get_data_from_api(endpoint):
         return pd.DataFrame()
 
 # Connexion à la base de données MySQL
-connection = pymysql.connect(
+connexion = pymysql.connect(
     host='localhost',
     user='root',
     password='MySqlMatching',
@@ -22,13 +22,13 @@ connection = pymysql.connect(
 )
 
 # Extraire les données de la table Patients
-df_patients = pd.read_sql("SELECT * FROM Patients", connection)
+df_patients = pd.read_sql("SELECT * FROM Patients", connexion)
 
 # Extraire les données de la table Analyses
-df_analyses = pd.read_sql("SELECT * FROM Analyses", connection)
+df_analyses = pd.read_sql("SELECT * FROM Analyses", connexion)
 
 # Fermer la connexion à la base de données
-connection.close()
+connexion.close()
 
 # Fusionner les DataFrames en utilisant la colonne 'Id_Patients'
 df_merged = pd.merge(df_patients, df_analyses, on='Id_Patients', how='inner')

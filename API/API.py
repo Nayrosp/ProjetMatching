@@ -46,14 +46,14 @@ CREATE TABLE IF NOT EXISTS Analyses (
 
 def initialize_database():
     with app.app_context():
-        connection = connect_to_database()
-        with connection.cursor() as cursor:
+        connexion = connect_to_database()
+        with connexion.cursor() as cursor:
             cursor.execute(CREATE_PATIENTS_TABLE)
             cursor.execute(CREATE_ANALYSES_TABLE)
-        connection.close()
+        connexion.close()
 
 def connect_to_database():
-    connection = pymysql.connect(
+    connexion = pymysql.connect(
         host=DB_HOST,
         user=DB_USER,
         password=DB_PASSWORD,
@@ -61,7 +61,7 @@ def connect_to_database():
         port=DB_PORT,
         cursorclass=pymysql.cursors.DictCursor
     )
-    return connection
+    return connexion
 
 @app.before_request
 def before_request():
@@ -79,29 +79,29 @@ def add_patient():
     telephone = data.get('Telephone')
     adresse_mail = data.get('Adresse_mail')
 
-    with connect_to_database() as connection, connection.cursor() as cursor:
+    with connect_to_database() as connexion, connexion.cursor() as cursor:
         cursor.execute("INSERT INTO Patients (Nom, Prenom, Date_de_naissance, Sexe, Adresse, Telephone, Adresse_mail) "
                        "VALUES (%s, %s, %s, %s, %s, %s, %s);",
                        (nom, prenom, date_naissance, sexe, adresse, telephone, adresse_mail))
-        connection.commit()
+        connexion.commit()
 
     return jsonify({"message": "Patient ajouté avec succès"}), 201
 
 # CRUD: Read (Lecture) - Récupérer tous les patients
 @app.route('/patients', methods=['GET'])
 def get_all_patients():
-    connection = connect_to_database()
-    with connection.cursor() as cursor:
+    connexion = connect_to_database()
+    with connexion.cursor() as cursor:
         cursor.execute("SELECT * FROM Patients;")
         all_patients = cursor.fetchall()
-    connection.close()
+    connexion.close()
 
     return jsonify(patients=all_patients)
 
 # CRUD: Read (Lecture) - Récupérer un patient par ID
 @app.route('/patients/<int:Id_Patients>', methods=['GET'])
 def get_patient_by_id(Id_Patients):
-    with connect_to_database() as connection, connection.cursor() as cursor:
+    with connect_to_database() as connexion, connexion.cursor() as cursor:
         cursor.execute("SELECT * FROM Patients WHERE Id_Patients = %s;", (Id_Patients,))
         patient = cursor.fetchone()
 
@@ -122,7 +122,7 @@ def update_patient(Id_Patients):
     telephone = data.get('Telephone')
     adresse_mail = data.get('Adresse_mail')
 
-    with connect_to_database() as connection, connection.cursor() as cursor:
+    with connect_to_database() as connexion, connexion.cursor() as cursor:
         # Vérifier d'abord si le patient existe
         cursor.execute("SELECT * FROM Patients WHERE Id_Patients = %s;", (Id_Patients,))
         existing_patient = cursor.fetchone()
@@ -134,14 +134,14 @@ def update_patient(Id_Patients):
         cursor.execute("UPDATE Patients SET Nom=%s, Prenom=%s, Date_de_naissance=%s, Sexe=%s, Adresse=%s, "
                        "Telephone=%s, Adresse_mail=%s WHERE Id_Patients=%s;",
                        (nom, prenom, date_naissance, sexe, adresse, telephone, adresse_mail, Id_Patients))
-        connection.commit()
+        connexion.commit()
 
     return jsonify({"message": "Patient mis à jour avec succès"})
 
 # CRUD: Delete (Suppression) - Supprimer un patient par ID
 @app.route('/patients/<int:Id_Patients>', methods=['DELETE'])
 def delete_patient(Id_Patients):
-    with connect_to_database() as connection, connection.cursor() as cursor:
+    with connect_to_database() as connexion, connexion.cursor() as cursor:
         # Vérifier d'abord si le patient existe
         cursor.execute("SELECT * FROM Patients WHERE Id_Patients = %s;", (Id_Patients,))
         existing_patient = cursor.fetchone()
@@ -151,7 +151,7 @@ def delete_patient(Id_Patients):
 
         # Supprimer le patient
         cursor.execute("DELETE FROM Patients WHERE Id_Patients=%s;", (Id_Patients,))
-        connection.commit()
+        connexion.commit()
 
     return jsonify({"message": "Patient supprimé avec succès"})
 
@@ -167,29 +167,29 @@ def add_analysis():
     commentaire = data.get('Commentaire')
     Id_Patients = data.get('Id_Patients')  # Assurez-vous que cette clé est présente dans votre requête JSON
 
-    with connect_to_database() as connection, connection.cursor() as cursor:
+    with connect_to_database() as connexion, connexion.cursor() as cursor:
         cursor.execute("INSERT INTO Analyses (Nom_de_l_analyse, Description_de_l_analyse, Concentration__mg_L_, Valeur_de_reference__mg_L_, Date_analyse, Commentaire, Id_Patients) "
                        "VALUES (%s, %s, %s, %s, %s, %s, %s);",
                        (nom_analyse, description_analyse, concentration, valeur_reference, date_analyse, commentaire, Id_Patients))
-        connection.commit()
+        connexion.commit()
 
     return jsonify({"message": "Analyse ajoutée avec succès"}), 201
 
 # CRUD: Read (Lecture) - Récupérer toutes les analyses
 @app.route('/analyses', methods=['GET'])
 def get_all_analyses():
-    connection = connect_to_database()
-    with connection.cursor() as cursor:
+    connexion = connect_to_database()
+    with connexion.cursor() as cursor:
         cursor.execute("SELECT * FROM analyses;")
         all_analyses = cursor.fetchall()
-    connection.close()
+    connexion.close()
 
     return jsonify(analyses=all_analyses)
 
 # CRUD: Read (Lecture) - Récupérer une analyse par ID
 @app.route('/analyses/<int:Id_analyses>', methods=['GET'])
 def get_analysis_by_id(Id_analyses):
-    with connect_to_database() as connection, connection.cursor() as cursor:
+    with connect_to_database() as connexion, connexion.cursor() as cursor:
         cursor.execute("SELECT * FROM analyses WHERE Id_analyses = %s;", (Id_analyses,))
         analysis = cursor.fetchone()
 
@@ -207,7 +207,7 @@ def update_analysis(Id_analyses):
     concentration = data.get('Concentration')
     valeur_reference = data.get('Valeur_de_reference')
 
-    with connect_to_database() as connection, connection.cursor() as cursor:
+    with connect_to_database() as connexion, connexion.cursor() as cursor:
         # Vérifier d'abord si l'analyse existe
         cursor.execute("SELECT * FROM analyses WHERE Id_analyses = %s;", (Id_analyses,))
         existing_analysis = cursor.fetchone()
@@ -219,14 +219,14 @@ def update_analysis(Id_analyses):
         cursor.execute("UPDATE analyses SET Nom_de_l_analyse=%s, Description_de_l_analyse=%s, Concentration=%s, "
                        "Valeur_de_reference=%s WHERE Id_analyse=%s;",
                        (nom_analyse, description_analyse, concentration, valeur_reference, Id_analyses))
-        connection.commit()
+        connexion.commit()
 
     return jsonify({"message": "Analyse mise à jour avec succès"})
 
 # CRUD: Delete (Suppression) - Supprimer une analyse par ID
 @app.route('/analyses/<int:Id_analyses>', methods=['DELETE'])
 def delete_analysis(Id_analyses):
-    with connect_to_database() as connection, connection.cursor() as cursor:
+    with connect_to_database() as connexion, connexion.cursor() as cursor:
         # Vérifier d'abord si l'analyse existe
         cursor.execute("SELECT * FROM analyses WHERE Id_analyses = %s;", (Id_analyses,))
         existing_analysis = cursor.fetchone()
@@ -236,7 +236,7 @@ def delete_analysis(Id_analyses):
 
         # Supprimer l'analyse
         cursor.execute("DELETE FROM analyses WHERE Id_analyses=%s;", (Id_analyses,))
-        connection.commit()
+        connexion.commit()
 
     return jsonify({"message": "Analyse supprimée avec succès"})
                        
