@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 from streamlit_lottie import st_lottie
-import psycopg2
 
 st.set_page_config(
     page_title="Accueil",
@@ -42,7 +41,7 @@ Nous offrons une gamme complète d'analyses pour aider au diagnostic et au suivi
 Notre laboratoire est équipé pour soutenir la recherche avancée dans divers domaines biomédicaux.
 
 - Conseil et Formation : 
-Nous proposons des services de conseil et de formation pour aider les professionnels à interpréter les résultats des analyses et à optimiser leurs pratiques
+Nous proposons des services de conseil et de formation pour aider les professionnels à interpréter les résultats des analyses et à optimiser leurs pratiques.
             """
                 )
         
@@ -64,7 +63,7 @@ with st.container():
 # ---- Engagement envers la Qualité -----
 with st.container():
     st.write("---")
-    st.header("Engagement envers la Qualité")
+    st.header("Engagement Qualité")
     st.write("##")
     texte_qualite = ("""
     La qualité est au cœur de tout ce que nous faisons. 

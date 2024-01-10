@@ -1,15 +1,14 @@
 import streamlit as st
-import pandas as pd
 import mysql.connector
 
 # Se connecter à la base de données MySQL
-conn = mysql.connector.connect(
+connexion = mysql.connector.connect(
     host="localhost",
     user="root",
     password="MySqlMatching",
     database="matching2"
 )
-cursor = conn.cursor()
+cursor = connexion.cursor()
 
 # Fonctions pour ajouter des données
 def ajouter_nouveau_patient(cursor, nom, prenom, date_naissance, sexe, adresse, telephone, email):
@@ -17,14 +16,14 @@ def ajouter_nouveau_patient(cursor, nom, prenom, date_naissance, sexe, adresse, 
         "INSERT INTO Patients (Nom, Prenom, Date_de_naissance, Sexe, Adresse, Telephone, Adresse_mail) VALUES (%s, %s, %s, %s, %s, %s, %s)",
         (nom, prenom, date_naissance, sexe, adresse, telephone, email)
     )
-    conn.commit()
+    connexion.commit()
 
 def ajouter_nouvelle_analyse(cursor, nom_analyse, description, concentration, valeur_reference, date_analyse, commentaire, id_patient):
     cursor.execute(
         "INSERT INTO Analyses (Nom_de_l_analyse, Description_de_l_analyse, Concentration__mg_L_, Valeur_de_reference__mg_L_, Date_analyse, Commentaire, Id_Patients) VALUES (%s, %s, %s, %s, %s, %s, %s)",
         (nom_analyse, description, concentration, valeur_reference, date_analyse, commentaire, id_patient)
     )
-    conn.commit()
+    connexion.commit()
 
 # Interface Streamlit pour ajouter un patient
 with st.container():
@@ -64,28 +63,4 @@ if st.button("Ajouter Analyse") and id_patient:
 
 # Fermer le curseur et la connexion
 cursor.close()
-conn.close()
-
-# Extraire les données de la table Patients
-connexion = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="MySqlMatching",
-    database="matching2"
-)
-cursor = connexion.cursor()
-cursor.execute("SELECT * FROM Patients")
-patients_data = cursor.fetchall()
-columns_patients = [i[0] for i in cursor.description]
-df_patients = pd.DataFrame(patients_data, columns=columns_patients)
-
-# Extraire les données de la table Analyses
-cursor.execute("SELECT * FROM Analyses")
-analyses_data = cursor.fetchall()
-columns_analyses = [i[0] for i in cursor.description]
-df_analyses = pd.DataFrame(analyses_data, columns=columns_analyses)
-
-# Fermer le curseur
-cursor.close()
-
-
+connexion.close()
